@@ -7,10 +7,9 @@
 
 # testing
 /coverage
-
+firebase.json
 # production
 /build
-/firebase
 # misc
 .DS_Store
 .env.local
