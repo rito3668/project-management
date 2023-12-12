@@ -14,7 +14,7 @@ export const useLogout = () => {
 
     try {
       //chaging the online status
-      projectFiretore.collection("users").doc(user.uid).update({online:false}) 
+      await projectFiretore.collection("users").doc(user.uid).update({online:false}) 
       // sign the user out
       await projectAuth.signOut()
       
