@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { projectAuth ,projectFiretore} from '../firebase/config'
+import { projectAuth ,projectFirestore} from '../firebase/config'
 import { useAuthContext } from './useAuthContext'
 import { projectStorage } from '../firebase/config'
 export const useSignup = () => {
@@ -27,7 +27,7 @@ export const useSignup = () => {
 
       // add display AND PHOTO_URL name to user
       await res.user.updateProfile({ displayName, photoURL})
-      await projectFiretore.collection("users").doc(res.user.uid).set({
+      await projectFirestore.collection("users").doc(res.user.uid).set({
         photoURL,
         online:true,
         displayName
