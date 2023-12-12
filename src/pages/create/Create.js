@@ -2,6 +2,9 @@ import './Create.css'
 import { useEffect, useState } from 'react'
 import { useCollection } from '../../hooks/useCollection'
 import Select from 'react-select'
+import { projectFirestore, timestamp } from '../../firebase/config'
+import { useAuthContext } from '../../hooks/useAuthContext'
+import { useFirestore } from '../../hooks/useFirestore'
 const categories = [
     {value:'development',label:'Development'},
     {value:'design',label:'Design'},
@@ -10,11 +13,13 @@ const categories = [
 ]
 export default function Create() {
     const {documents} = useCollection("users")
+    const {user} = useAuthContext()
     const [users,setUsers] = useState([])
+    const {addDocument,response} = useFirestore("projects")
     useEffect(()=>{
         if(documents){
             setUsers(documents.map((user)=>{
-                return {value:{...user},label:user.displayName}
+                return {value:{...user,id:user.id},label:user.displayName}
             }))
         }
     },[documents])
@@ -24,7 +29,7 @@ export default function Create() {
     const [category,setCategory] = useState('')
     const [assignedUsers,setAssignedUsers] = useState([])
     const [formError,setFormError] = useState(null)
-    const handleSubmit = (e)=>{
+    const handleSubmit = async(e)=>{
         e.preventDefault()
         setFormError(null)
         if(!category){
@@ -35,8 +40,28 @@ export default function Create() {
             setFormError("please assign to atleast one user")
             return
         }
-
-        console.log(name,details,dueDate,category.value,assignedUsers)
+        const createdBy = {
+            displayName:user.displayName,
+            photoURL:user.photoURL,
+            id:user.uid
+        }
+        const assignedUsersList = assignedUsers.map((u)=>{
+            return {
+                displayName:u.value.displayName,
+                photoURL:u.value.photoURL,
+                id:u.value.id
+            }
+        })
+        const project ={
+            name,
+            details,
+            category:category.value,
+            dueDate:timestamp.fromDate(new Date(dueDate)),
+            assignedUsersList,
+            createdBy,
+            comments:[]
+        }
+        await addDocument(project)
     }
   return (
     <div className='create-form'>
