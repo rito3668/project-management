@@ -26,8 +26,9 @@ export const useLogin = () => {
     } 
     catch(err) {
       if (!isCancelled) {
-        setError(err.message)
         setIsPending(false)
+        setError("invalid credentials")
+        
       }
     }
   }
