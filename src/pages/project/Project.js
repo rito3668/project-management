@@ -2,6 +2,7 @@ import { useDocument } from '../../hooks/useDocument'
 import './Project.css'
 import {useParams} from 'react-router-dom'
 import ProjectSummary from './ProjectSummary'
+import ProjectComments from './ProjectComments'
 export default function Project() {
   const {id} = useParams()
   const {error,document} = useDocument("projects",id)
@@ -13,7 +14,8 @@ export default function Project() {
   }
   return (
     <div className='project-details'>
-      <ProjectSummary/>
+      <ProjectSummary project={document}/>
+      <ProjectComments/>
     </div>
   )
 }
