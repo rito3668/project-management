@@ -6,8 +6,12 @@ export const useDocument = (collection,id)=>{
     useEffect(()=>{
         const ref = projectFirestore.collection(collection).doc(id)
         const unsub= ref.onSnapshot((snapshot)=>{
-            setDocument({...snapshot.data(),id:snapshot.id})
-            setError(null)
+            if(snapshot.data()){
+                setDocument({...snapshot.data(),id:snapshot.id})
+                setError(null)
+            }else{
+                setError("document doesn't exist")
+            }
         },err=>{
             setError("could not fetch the data")
         })

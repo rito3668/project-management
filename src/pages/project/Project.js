@@ -1,6 +1,7 @@
 import { useDocument } from '../../hooks/useDocument'
 import './Project.css'
 import {useParams} from 'react-router-dom'
+import ProjectSummary from './ProjectSummary'
 export default function Project() {
   const {id} = useParams()
   const {error,document} = useDocument("projects",id)
@@ -12,7 +13,7 @@ export default function Project() {
   }
   return (
     <div className='project-details'>
-      <h1>{projectAuth.name}</h1>
+      <ProjectSummary/>
     </div>
   )
 }
