@@ -17,14 +17,17 @@ export default function Dashboard() {
           return true
         case 'mine':
           let assignedToMe=false
-          documents.assignedUsersList.forEach((u)=>{
+          doc.assignedUsersList.forEach((u)=>{
             if(user.uid === u.id)assignedToMe=true
           }) 
           return assignedToMe
-        //  case 'development':
-        //  case 'design':
-        //  case 'sales':
-        //  case 'marketing':     
+        case 'development':
+        case 'design':
+        case 'sales':
+        case 'marketing':
+          return doc.category === currentFilter   
+        default: 
+          return true    
       }
   }):null
   return (
@@ -32,7 +35,7 @@ export default function Dashboard() {
       <h2 className='page-title'>Dashboard</h2>
       {error&&<p className='error'>{error}</p>}
       {documents && <DashBoardFilter currentFilter={currentFilter} changeFilter={changeFilter}/>}
-      {documents&&<ProjectList projects={documents}/>}
+      {documents&&<ProjectList projects={filteredProjects}/>}
 
     </div>
   )
